@@ -42,6 +42,21 @@ class MetacriticSpider(Spider):
 
 		item["Length"] = response.xpath('//li[@class="summary_detail product_runtime"]//span[@class="data"]/text()').extract_first()
 
+		try:
+			item["Genre"] = response.xpath("//li[@class='summary_detail product_genre']/span[@class='data']/text()").extract()
+		except AttributeError:
+			item["Genre"] = "N/A"
+
+		new_url = 'http://www.metacritic.com/' + response.xpath('//li[@class="summary_detail more"]/a/@href').extract_first()
+		
+		request2 = Request(new_url, callback = self.season_parse)
+		request2.meta['item'] = item
+		
+		yield request2 
+
+	def season_parse(self, response):
+		item = response.meta['item']
+		item["Seasons"] = response.xpath('//div[@class="product_details"]//th[@scope="row" and text() = "Seasons:"]/following-sibling::td/text()').extract_first().strip().replace(" ","")
 
 		yield item 
 
