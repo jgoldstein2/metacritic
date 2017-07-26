@@ -18,6 +18,6 @@ class MetacriticItem(scrapy.Item):
 	Network = scrapy.Field()
 	SeasonDate = scrapy.Field()
 	SeriesDate = scrapy.Field()
-	#Genre = scrapy.Field()
 	Length = scrapy.Field()
-	
+	Genre = scrapy.Field()
+	Seasons = scrapy.Field()
